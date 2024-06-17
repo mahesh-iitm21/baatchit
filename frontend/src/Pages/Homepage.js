@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Homepage = () => {
-  return (
-    <div>
-      Home
-    </div>
-  )
-}
+  return <div>Welcome to fronted Homepage</div>;
+};
 
-export default Homepage
+export default Homepage;
