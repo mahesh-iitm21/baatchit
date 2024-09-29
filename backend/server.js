@@ -1,18 +1,28 @@
-const dotenv = require("dotenv");
 const express = require("express");
+const connectDB = require("./config/db");
+const dotenv = require("dotenv");
+const userRoutes = require("./routes/userRoutes");
+const chatRoutes = require("./routes/chatRoutes");
+const messageRoutes = require("./routes/messageRoutes");
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const path = require("path");
+
 dotenv.config();
-
-const { chats } = require("./data/data");
-
+connectDB();
 const app = express();
+const cors = require("cors");
 
-app.get("/", (req, res) => {
-  res.send("Wecome to backend");
-});
+app.use(cors());
+app.use(express.json()); // to accept json data
 
-app.get("/api/chats", (req, res) => {
-  res.send(chats);
-});
-const PORT = process.env.PORT || 5001;
-// console.log(PORT);
-app.listen(`${PORT}`, console.log(`Server started on port:${PORT}`));
+app.use("/api/user", userRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
+
+// Error Handling middlewares
+app.use(notFound);
+app.use(errorHandler);
+
+const PORT = process.env.PORT;
+
+app.listen(PORT, console.log(`Server running on PORT ${PORT}...`.yellow.bold));
